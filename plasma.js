@@ -18,6 +18,8 @@ var demo = new function()
     var freq2 = 33.3;
     var layers = 3;
     var cycle = 0;
+    var scale = 1;
+    var mod = 0.01;
 
     this.canvas = undefined;
 
@@ -67,8 +69,8 @@ var demo = new function()
     {
         cyclePalettes();
 
-        var t1 = (new Date() - start) / 100;
-        var t2 = (new Date() - start) / 1000;
+        var t1 = (new Date() - start) / 1000;
+        var t2 = (new Date() - start) / 10000;
 
         var f1, f2, f3;
 
@@ -90,7 +92,7 @@ var demo = new function()
                     f1 = 128 + (128 * Math.sin(x / freq2 - t2));
                     f2 = 128 + (128 * Math.sin(y / freq2 + t2));
                     f3 = 128 + (128 * Math.sin(distance(x, y,
-                        Math.sin(-t2) * 128 + 128, Math.cos(-t2)* 128 + 128)));
+                        Math.sin(-t2) * 128 + 128, Math.cos(-t2) * 128 + 128)));
 
                     drawPixel(imageData2, x, y,
                         palette2[~~((f1 + f2 + f3) / 3.0)], 128);
@@ -144,7 +146,11 @@ var demo = new function()
         if(layers & 0x02)
         {
             bufferContext.putImageData(imageData2, 0, 0);
-            context.drawImage(buffer, 0, 0, canvas.width, canvas.height);
+            context.drawImage(buffer, 0, 0, canvas.width * scale, canvas.height * scale);
+            
+            scale += mod;
+            if(scale > 2.22 || scale < 1)
+                mod = -(mod);
         }
     };
 
