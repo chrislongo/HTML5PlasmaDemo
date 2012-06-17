@@ -17,6 +17,7 @@ var demo = new function()
     var freq1 = 47.5;
     var freq2 = 33.3;
     var layers = 3;
+    var cycle = 0;
 
     this.canvas = undefined;
 
@@ -66,26 +67,38 @@ var demo = new function()
     {
         cyclePalettes();
 
-        var time1 = (new Date() - start) / 100;
-        var time2 = (new Date() - start) / 1000;
+        var t1 = (new Date() - start) / 100;
+        var t2 = (new Date() - start) / 1000;
+
+        var f1, f2, f3;
 
         for(var x = 0; x < width; x++)
         {
             for(var y = 0; y < height; y++)
             {
-                var p1 = 128 + (128 * Math.sin(x / freq1 + time1));
-                var p2 = 128 + (128 * Math.sin(y / freq1 - time1));
-                var p3 = 128 + (128 * Math.sin(hypot(x, y) / freq1 + time1));
+                if(!cycle)
+                {
+                    f1 = 128 + (128 * Math.sin(x / freq1 + t1));
+                    f2 = 128 + (128 * Math.sin(y / freq1 - t1));
+                    f3 = 128 + (128 * Math.sin(hypot(x, y) / freq1 + t1));
 
-                drawPixel(imageData1, x, y, palette1[~~((p1 + p2 + p3) / 3)], 255);
+                    drawPixel(imageData1, x, y,
+                        palette1[~~((f1 + f2 + f3) / 3.0)], 255);
+                }
+                else
+                {
+                    f1 = 128 + (128 * Math.sin(x / freq2 - t2));
+                    f2 = 128 + (128 * Math.sin(y / freq2 + t2));
+                    f3 = 128 + (128 * Math.sin(distance(x, y,
+                        Math.sin(-t2) * 128 + 128, Math.cos(-t2)* 128 + 128)));
 
-                p1 = 128 + (128 * Math.sin(x / freq2 - time2));
-                p2 = 128 + (128 * Math.sin(y / freq2 + time2));
-                p3 = 128 + (128 * Math.sin(distance(x, y, Math.sin(-time2), Math.cos(-time2))));
-
-                drawPixel(imageData2, x, y, palette2[~~((p1 + p2 + 0) / 2)], 128);
+                    drawPixel(imageData2, x, y,
+                        palette2[~~((f1 + f2 + f3) / 3.0)], 128);
+                }
             }
         }
+        
+        cycle = !cycle;
     };
 
     var cyclePalettes = function()
