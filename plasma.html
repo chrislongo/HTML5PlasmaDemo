@@ -1,0 +1,47 @@
+<html>
+<head>
+    <title>HTML5 Canvas Fire Demo</title>
+    <style type="text/css">
+    body {
+        padding:0;
+        margin:0;
+        font-family:'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
+        font-size: x-large;
+        color: white;
+        text-shadow: black 0.1em 0.1em 0.2em;
+    }
+    #canvas {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+    #framerate {
+        position: absolute;
+    }
+    a:link {color:#f33;} 
+    a:visited {color:#f33;}
+    a:hover {color:#f33;}  
+    a:active {color:#f33;}
+    </style>
+    <script type="text/javascript" src="plasma.js"></script>
+    <script type="text/javascript">
+        setInterval(function()
+        {
+            document.getElementById("framerate").innerHTML = 
+                "FPS: " + demo.framerate();
+        }, 1000);
+        
+        window.onload = function()
+        {
+            demo.canvas = document.getElementById('canvas');
+            demo.init();
+        };
+    </script>
+</head>
+<body>
+    <div id="content">        
+        <canvas id="canvas" width="500" height="500"></canvas>
+    </div>  
+    <div id="framerate">FPS: &infin;</div>
+</body>
+</html>
