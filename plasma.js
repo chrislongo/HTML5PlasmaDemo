@@ -7,8 +7,7 @@ var demo = new function()
     var bufferContext;
     var imageData1;
     var imageData2;
-    var palette1 = Array(256);
-    var palette2 = Array(256);
+    var palette = Array(256);
     var width;
     var height;
     var frames = 0;
@@ -74,6 +73,7 @@ var demo = new function()
 
         var f1, f2, f3;
 
+        // render each layer on alternating frames
         for(var x = 0; x < width; x++)
         {
             for(var y = 0; y < height; y++)
@@ -84,8 +84,10 @@ var demo = new function()
                     f2 = 128 + (128 * Math.sin(y / freq1 - t1));
                     f3 = 128 + (128 * Math.sin(hypot(x, y) / freq1 + t1));
 
+                    p = ~~((f1 + f2 + f3) / 3.0);
+
                     drawPixel(imageData1, x, y,
-                        palette1[~~((f1 + f2 + f3) / 3.0)], 255);
+                        palette[p], 255);
                 }
                 else
                 {
@@ -95,7 +97,7 @@ var demo = new function()
                         Math.sin(-t2) * 128 + 128, Math.cos(-t2) * 128 + 128)));
 
                     drawPixel(imageData2, x, y,
-                        palette2[~~((f1 + f2 + f3) / 3.0)], 128);
+                        palette[~~((f1 + f2 + f3) / 3.0)], 128);
                 }
             }
         }
@@ -105,22 +107,35 @@ var demo = new function()
 
     var cyclePalettes = function()
     {
-        var time1 = (new Date() - start) / 3.33;
-        var time2 = (new Date() - start) / 2.22;
+        var r, g, b;
+        var i;
+        var t;
 
-        for(var i = 0; i < 256; i++)
+        if(!cycle)
         {
-            var r = ~~(128 + 127 * Math.cos(i * Math.PI / 128 + time1 / 45.0));
-            var g = ~~(128 + 127 * Math.sin(i * Math.PI / 128 + time1 / 55.0));
-            var b = ~~(128 + 127 * Math.cos(i * Math.PI / 128 + time1 / 77.0));
+            t  = (new Date() - start) / 3.33;
 
-            palette1[i] = [r, g, b];
+            for(i = 0; i < 256; i++)
+            {
+                r = ~~(128 + 128 * Math.cos(i * Math.PI / 128 + t / 45.0));
+                g = ~~(128 + 128 * Math.sin(i * Math.PI / 128 + t / 55.0));
+                b = ~~(128 + 128 * Math.cos(i * Math.PI / 128 + t / 77.0));
 
-            r = ~~(128 + 127 * Math.sin(i * Math.PI / 128 + time2 / 62.0));
-            g = ~~(128 + 127 * Math.cos(i * Math.PI / 128 + time2 / 47.0));
-            b = ~~(128 + 127 * Math.sin(i * Math.PI / 128 + time2 / 81.0));
+                palette[i] = [r, g, b];
+            }
+        }
+        else
+        {
+            t = (new Date() - start) / 2.22;
+            
+            for(i = 0; i < 256; i++)
+            {
+                r = ~~(128 + 127 * Math.sin(i * Math.PI / 128 + t / 62.0));
+                g = ~~(128 + 127 * Math.cos(i * Math.PI / 128 + t / 47.0));
+                b = ~~(128 + 127 * Math.sin(i * Math.PI / 128 + t / 81.0));
 
-            palette2[i] = [r, g, b];
+                palette[i] = [r, g, b];
+            }
         }
     };
 
@@ -146,7 +161,8 @@ var demo = new function()
         if(layers & 0x02)
         {
             bufferContext.putImageData(imageData2, 0, 0);
-            context.drawImage(buffer, 0, 0, canvas.width * scale, canvas.height * scale);
+            context.drawImage(buffer, 0, 0,
+                canvas.width * scale, canvas.height * scale);
             
             scale += mod;
             if(scale > 2.22 || scale < 1)
