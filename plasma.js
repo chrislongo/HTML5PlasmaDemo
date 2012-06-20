@@ -130,9 +130,9 @@ var demo = new function()
             
             for(i = 0; i < 256; i++)
             {
-                r = ~~(128 + 127 * Math.sin(i * Math.PI / 128 + t / 62.0));
-                g = ~~(128 + 127 * Math.cos(i * Math.PI / 128 + t / 47.0));
-                b = ~~(128 + 127 * Math.sin(i * Math.PI / 128 + t / 81.0));
+                r = ~~(128 + 128 * Math.sin(i * Math.PI / 128 + t / 62.0));
+                g = ~~(128 + 128 * Math.cos(i * Math.PI / 128 + t / 47.0));
+                b = ~~(128 + 128 * Math.sin(i * Math.PI / 128 + t / 81.0));
 
                 palette[i] = [r, g, b];
             }
