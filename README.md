@@ -1,6 +1,8 @@
 #HTML5 Plasma Demo
 
-http://chrislongo.net/html5/plasma/
+![A picture of the plasma demo in action](http://chrislongo.net/html5/plasma.png)
+
+http://chrislongo.net/html5/plasma
 
 The good old plasma effect based on countless other implementations.  I made
 this as part of my ongoing HTML5 learning.  
